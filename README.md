@@ -59,7 +59,8 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Tests
 
 ```bash
-bin/rails test test:system
+bin/rails test
+bin/rails test:system
 ```
 
 Fuel totals for the three missions above live in `test/models/fuel_calculator_test.rb`. Path sequence rules are covered in `test/models/travel_path_test.rb`.
