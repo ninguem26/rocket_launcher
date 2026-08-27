@@ -3,6 +3,7 @@
 <li class="path-point"
     data-controller="path-point"
     data-path-list-target="point"
+    data-maneuver="<%= maneuver %>"
     data-path-point-gravities-value="<%= CelestialBody.gravity_map.to_json %>">
   <span data-step-index>1</span>.
 
@@ -13,7 +14,7 @@
     <span class="visually-hidden">Celestial body</span>
     <select name="path_points[][body]"
             data-path-point-target="body"
-            data-action="change->path-point#updateGravity">
+            data-action="change->path-point#updateGravity change->path-list#refresh">
       <%= options_from_collection_for_select(CelestialBody.all, :key, :name, selected_body) %>
     </select>
   </label>

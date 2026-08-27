@@ -2,23 +2,28 @@
 
 <main class="page">
   <h1>Fuel calculator</h1>
-  <p class="lede">Enter the ship mass and a sequence of launches and landings.</p>
+  <p class="lede">
+    Enter the ship mass and a sequence of launches and landings.
+    After a landing, the next action must be a launch from the same body.
+    After a launch, the next action must be a landing (any body).
+  </p>
 
   <div class="layout">
-    <%= form_with url: calculate_space_travel_path, method: :post, id: "mission-form" do %>
+    <%= form_with url: calculate_space_travel_path, method: :post, id: "mission-form",
+          data: { controller: "path-list", action: "submit->path-list#enableSelects" } do %>
       <p>
         <label for="mass">Spaceship mass (kg)</label><br>
         <input type="number" name="mass" id="mass" min="1" step="1" required
                value="<%= @equipment_mass %>" placeholder="28801">
       </p>
 
-      <div class="path" data-controller="path-list">
+      <div class="path">
         <div class="path-toolbar">
           <strong>Travel path</strong>
           <%= link_to "Add launch", add_path_point_space_travel_path(maneuver: "launch"),
-                data: { turbo_method: :post, turbo_stream: true } %>
+                data: { turbo_method: :post, turbo_stream: true, path_list_target: "addLaunch" } %>
           <%= link_to "Add landing", add_path_point_space_travel_path(maneuver: "land"),
-                data: { turbo_method: :post, turbo_stream: true } %>
+                data: { turbo_method: :post, turbo_stream: true, path_list_target: "addLanding" } %>
         </div>
 
         <ol id="path_points" class="path-list">

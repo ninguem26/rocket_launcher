@@ -44,6 +44,32 @@ class SpaceTravelControllerTest < ActionDispatch::IntegrationTest
     assert_match "at least one launch or landing", @response.body
   end
 
+  test "calculate rejects a launch that does not follow a landing on the same body" do
+    post calculate_space_travel_path, params: {
+      mass: 28801,
+      path_points: [
+        { maneuver: "land", body: "moon" },
+        { maneuver: "launch", body: "earth" }
+      ]
+    }, as: :turbo_stream
+
+    assert_response :unprocessable_entity
+    assert_match "launch from Moon", @response.body
+  end
+
+  test "calculate rejects two launches in a row" do
+    post calculate_space_travel_path, params: {
+      mass: 28801,
+      path_points: [
+        { maneuver: "launch", body: "earth" },
+        { maneuver: "launch", body: "moon" }
+      ]
+    }, as: :turbo_stream
+
+    assert_response :unprocessable_entity
+    assert_match "must be a landing", @response.body
+  end
+
   private
 
   def apollo_11_params

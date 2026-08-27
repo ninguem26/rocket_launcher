@@ -56,7 +56,7 @@ class SpaceTravelController < ApplicationController
     return "Enter a positive equipment mass in kilograms." unless @equipment_mass&.positive?
     return "Add at least one launch or landing to the travel path." if @steps.empty?
 
-    nil
+    TravelPath.sequence_error(@steps)
   end
 
   def render_calculation(status: :ok)
