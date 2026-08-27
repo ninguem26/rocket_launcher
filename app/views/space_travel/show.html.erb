@@ -1,0 +1,42 @@
+<% content_for :title, "Fuel calculator" %>
+
+<main class="page">
+  <h1>Fuel calculator</h1>
+  <p class="lede">Enter the ship mass and a sequence of launches and landings.</p>
+
+  <div class="layout">
+    <%= form_with url: calculate_space_travel_path, method: :post, id: "mission-form" do %>
+      <p>
+        <label for="mass">Spaceship mass (kg)</label><br>
+        <input type="number" name="mass" id="mass" min="1" step="1" required
+               value="<%= @equipment_mass %>" placeholder="28801">
+      </p>
+
+      <div class="path" data-controller="path-list">
+        <div class="path-toolbar">
+          <strong>Travel path</strong>
+          <%= link_to "Add launch", add_path_point_space_travel_path(maneuver: "launch"),
+                data: { turbo_method: :post, turbo_stream: true } %>
+          <%= link_to "Add landing", add_path_point_space_travel_path(maneuver: "land"),
+                data: { turbo_method: :post, turbo_stream: true } %>
+        </div>
+
+        <ol id="path_points" class="path-list">
+          <% Array(@steps).each do |step| %>
+            <%= render "path_point", maneuver: step.maneuver, selected_body: step.body.key %>
+          <% end %>
+        </ol>
+
+        <p class="path-empty" data-path-list-target="empty">No path points yet.</p>
+      </div>
+
+      <p>
+        <button type="submit">Calculate fuel</button>
+      </p>
+    <% end %>
+
+    <section id="fuel_result" aria-live="polite">
+      <%= render "result" %>
+    </section>
+  </div>
+</main>

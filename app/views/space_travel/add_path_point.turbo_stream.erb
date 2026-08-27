@@ -1,0 +1,6 @@
+<%= turbo_stream.append "path_points" do %>
+  <%= render "path_point", maneuver: @maneuver %>
+<% end %>
+<%= turbo_stream.update "fuel_result" do %>
+  <%= render "result" %>
+<% end %>

@@ -1,0 +1,13 @@
+<% if @error.present? %>
+  <p class="error"><%= @error %></p>
+<% elsif @result %>
+  <h2>Total fuel: <%= number_with_delimiter(@result.total_fuel) %> kg</h2>
+  <ul class="steps">
+    <% @result.steps.each do |breakdown| %>
+      <li>
+        <%= breakdown.step.label %> <%= breakdown.step.body_name %>:
+        <%= number_with_delimiter(breakdown.fuel) %> kg
+      </li>
+    <% end %>
+  </ul>
+<% end %>

@@ -1,0 +1,27 @@
+<% selected_body = local_assigns.fetch(:selected_body, "earth") %>
+
+<li class="path-point"
+    data-controller="path-point"
+    data-path-list-target="point"
+    data-path-point-gravities-value="<%= CelestialBody.gravity_map.to_json %>">
+  <span data-step-index>1</span>.
+
+  <input type="hidden" name="path_points[][maneuver]" value="<%= maneuver %>">
+  <span><%= maneuver == "launch" ? "Launch" : "Land" %></span>
+
+  <label>
+    <span class="visually-hidden">Celestial body</span>
+    <select name="path_points[][body]"
+            data-path-point-target="body"
+            data-action="change->path-point#updateGravity">
+      <%= options_from_collection_for_select(CelestialBody.all, :key, :name, selected_body) %>
+    </select>
+  </label>
+
+  <span>
+    <span data-path-point-target="gravity"><%= sprintf("%.3f", CelestialBody.find(selected_body).gravity) %></span>
+    m/s²
+  </span>
+
+  <button type="button" data-action="path-point#remove">Remove</button>
+</li>
